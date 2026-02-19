@@ -1,4 +1,6 @@
 import "./style.css";
+import Block from "./model/block.js";
+
 
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
@@ -17,11 +19,9 @@ const dy = -2;
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);   
-    ctx.beginPath();
-    ctx.rect(x, y, 10, 10);
-    ctx.fillStyle = "#0095DD";
-    ctx.fill();
-    ctx.closePath();
+    const redBlock = new Block(20, 40, 50, 50, "#FF0000");
+    redBlock.draw(ctx);
+
     x += dx;
     y += dy;
 
