@@ -2,7 +2,6 @@ import "./style.css";
 import Ball from "./model/ball.js";
 import Paddle from "./model/paddle.js";
 
-
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -24,21 +23,25 @@ const paddle = new Paddle(
   "#0095DD",
 );
 
-
+let isGameOver = false;
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ball.draw(ctx);
-    ball.move();
-    ball.bounce(canvas.width, canvas.height);
+  ball.draw(ctx);
+  ball.move();
+  // ball.bounce(canvas.width, canvas.height);
+  isGameOver = !ball.bounce(canvas.width, canvas.height);
 
-    paddle.draw(ctx);
-    paddle.move(canvas.width);
+  paddle.draw(ctx);
+  paddle.move(canvas.width);
 
-    ball.collides(paddle);
+  ball.collides(paddle);
 
-
+  if (!isGameOver) {
     window.requestAnimationFrame(draw);
+  } else {
+    window.alert("Game over!");
+  }
 }
 
 draw();
