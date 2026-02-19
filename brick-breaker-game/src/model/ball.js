@@ -17,6 +17,13 @@ class Ball extends Sprite {
         }
     }
 
+    collides(other) {
+        if (this.intersects(other)) {
+            this.dy *= -1; // switch direction
+        }
+    }
+
+
 
 
 }
