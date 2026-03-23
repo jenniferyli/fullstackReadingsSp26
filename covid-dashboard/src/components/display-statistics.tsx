@@ -1,18 +1,23 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useEffect, useState } from "react"; // 👀 Add useEffect
+import { useEffect, useState } from "react";
 import type { CovidData } from "@/types/covid";
-import { fetchCovidData } from "@/services/disease"; // 👀
+import { fetchCovidData } from "@/services/disease";
 
 const STATISTICS: (keyof CovidData)[] = ["confirmed", "active", "recovered"];
 
-const DisplayStatistics = () => {
-  const [covidData, setCovidData] = useState<CovidData | null>(null); // 👀 Start with null
+// 👀 Define the props this component accepts
+type DisplayStatisticsProps = {
+  countryCode: string;
+};
 
-  // 👀 Fetch covid data for the US when the component mounts
+// 👀 Destructure countryCode from props
+const DisplayStatistics = ({ countryCode }: DisplayStatisticsProps) => {
+  const [covidData, setCovidData] = useState<CovidData | null>(null);
+
   useEffect(() => {
-    fetchCovidData("US").then((data) => setCovidData(data));
-  }, []);
+    fetchCovidData(countryCode).then((data) => setCovidData(data));
+  }, [countryCode]); // 👀 Re-fetch whenever countryCode changes
 
   return (
     <div className="flex w-full justify-between flex-col sm:flex-row gap-5">

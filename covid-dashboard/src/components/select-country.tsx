@@ -6,15 +6,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { useEffect, useState } from "react"; // 👀 Add useEffect
+import { useEffect, useState } from "react";
 import type { CountryData } from "@/types/country";
-import { fetchCountries } from "@/services/countries"; // 👀
+import { fetchCountries } from "@/services/countries";
 
-const SelectCountry = () => {
-  const [country, setCountry] = useState<CountryData | null>(null); // 👀 Start with null
-  const [countryData, setCountryData] = useState<CountryData[]>([]); // 👀 Start empty
+// 👀 Define the props this component accepts
+type SelectCountryProps = {
+  setCountryCode: (code: string) => void;
+};
 
-  // 👀 Fetch country list when the component mounts
+// 👀 Destructure setCountryCode from props
+const SelectCountry = ({ setCountryCode }: SelectCountryProps) => {
+  const [country, setCountry] = useState<CountryData>({
+    name: "United States",
+    code: "US",
+  });
+  const [countryData, setCountryData] = useState<CountryData[]>([]);
+
   useEffect(() => {
     fetchCountries().then((data) => setCountryData(data));
   }, []);
@@ -22,6 +30,7 @@ const SelectCountry = () => {
   const handleOnCountryChange = (value: string) => {
     const selected = countryData.find((c) => c.code === value);
     setCountry(selected!);
+    setCountryCode(value); // 👀 Notify the parent
   };
 
   return (
@@ -29,7 +38,7 @@ const SelectCountry = () => {
       <h1 className="text-6xl">Covid Statistics</h1>
       <div className="flex flex-col gap-5 justify-start w-full">
         <Label className="text-xl">Select a country:</Label>
-        <Select value={country?.code} onValueChange={handleOnCountryChange}>
+        <Select value={country.code} onValueChange={handleOnCountryChange}>
           <SelectTrigger className="w-full text-xl p-8 bg-white">
             <SelectValue placeholder="Country..." />
           </SelectTrigger>
