@@ -1,4 +1,5 @@
-import "../style.css";
+import "./style.css";
+
 
 // Get the necessary DOM elements
 const todoListElement = document.getElementById("todo-list");
@@ -33,29 +34,85 @@ function renderTodos() {
   }
 
   // Loop through the filtered todos and add them to the DOM
-  for (let i = 0; i < filteredTodos.length; i++) {
-    const todo = filteredTodos[i];
+  // for (let i = 0; i < filteredTodos.length; i++) {
+  //   const todo = filteredTodos[i];
 
-    const todoItem = document.createElement("div");
-    todoItem.classList.add("p-4", "todo-item");
+  //   const todoItem = document.createElement("div");
+  //   todoItem.classList.add("p-4", "todo-item");
 
-    const todoText = document.createElement("div");
-    todoText.id = `todo-text-${todo.id}`;
-    todoText.classList.add("todo-text");
-    if (todo.completed) {
-      todoText.classList.add("line-through");
-    }
-    todoText.innerText = todo.text;
-    todoItem.appendChild(todoText);
+  //   const todoText = document.createElement("div");
+  //   todoText.id = `todo-text-${todo.id}`;
+  //   todoText.classList.add("todo-text");
+  //   if (todo.completed) {
+  //     todoText.classList.add("line-through");
+  //   }
+  //   todoText.innerText = todo.text;
+  //   todoItem.appendChild(todoText);
 
-    const todoEdit = document.createElement("input");
-    todoEdit.classList.add("hidden", "todo-edit");
-    todoEdit.value = todo.text;
-    todoItem.appendChild(todoEdit);
+  //   const todoEdit = document.createElement("input");
+  //   todoEdit.classList.add("hidden", "todo-edit");
+  //   todoEdit.value = todo.text;
+  //   todoItem.appendChild(todoEdit);
 
-    todoListElement.appendChild(todoItem);
-  }
-}
+  //   todoListElement.appendChild(todoItem);
+  // }
+
+  // Loop through the filtered todos and add them to the DOM
+  // filteredTodos.forEach((todo) => {
+  //   const todoItem = document.createElement("div");
+  //   todoItem.classList.add("p-4", "todo-item");
+  //   todoListElement.appendChild(todoItem);
+
+  //   const todoText = document.createElement("div");
+  //   todoText.id = `todo-text-${todo.id}`;
+  //   todoText.classList.add("todo-text");
+  //   if (todo.completed) {
+  //     todoText.classList.add("line-through");
+  //   }
+  //   todoText.innerText = todo.text;
+  //   todoItem.appendChild(todoText);
+
+  //   const todoEdit = document.createElement("input");
+  //   todoEdit.classList.add("hidden", "todo-edit");
+  //   todoEdit.value = todo.text;
+  //   todoItem.appendChild(todoEdit);
+  // });
+
+  filteredTodos.forEach((todo) => {
+    todoListElement.appendChild(createTodoItem(todo));
+  });
+
+
+};
+
+// Helper function to create todo text element
+const createTodoText = (todo) => {
+  const todoText = document.createElement("div");
+  todoText.id = `todo-text-${todo.id}`;
+  todoText.classList.add(
+    "todo-text",
+    ...(todo.completed ? ["line-through"] : []),
+  );
+  todoText.innerText = todo.text;
+  return todoText;
+};
+
+// Helper function to create todo edit input element
+const createTodoEditInput = (todo) => {
+  const todoEdit = document.createElement("input");
+  todoEdit.classList.add("hidden", "todo-edit");
+  todoEdit.value = todo.text;
+  return todoEdit;
+};
+
+// Helper function to create a todo item
+const createTodoItem = (todo) => {
+  const todoItem = document.createElement("div");
+  todoItem.classList.add("p-4", "todo-item");
+  todoItem.append(createTodoText(todo), createTodoEditInput(todo));
+  return todoItem;
+};
+
 
 // Function to handle adding a new todo
 function handleKeyDownToCreateNewTodo(event) {
